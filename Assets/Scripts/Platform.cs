@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.XR.WSA.Persistence;
+﻿using UnityEngine;
+
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(Rigidbody2D))]
 public class Platform : MonoBehaviour, IOInterface {
