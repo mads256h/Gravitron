@@ -40,6 +40,9 @@ public class PlayerController : MonoBehaviour
             rigidbody2D.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
 	    }
 
+	    if (rigidbody2D.position.y < -10.0f)
+	        Die();
+
 	}
 
     private void OnCollisionEnter2D(Collision2D col)

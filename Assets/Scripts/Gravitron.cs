@@ -25,11 +25,25 @@ public class Gravitron : MonoBehaviour
 
     public Rigidbody2D PlayerRigidbody;
 
+    public AudioClip ChargeClip;
+    public AudioClip ClawsCloseClip;
+    public AudioClip ClawsOpenClip;
+    public AudioClip DropClip;
+    public AudioClip DryFireClip;
+    public AudioClip PickupClip;
+    public AudioClip TooHeavyClip;
+    public AudioClip FireClip;
+    public AudioClip HoldLoopClip;
+
+    private AudioSource _audioSource;
+
     private float _holdTimer = 0.0f;
+    private bool IsHoldingDown = false;
 
 	// Use this for initialization
-	void Start () {
-		
+	void Start ()
+	{
+	    _audioSource = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -59,6 +73,7 @@ public class Gravitron : MonoBehaviour
 
                     if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                     {
+                        _audioSource.PlayOneShot(FireClip);
                         shortHit.rigidbody.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
                         _holdTimer = 0;
                     }
@@ -66,12 +81,22 @@ public class Gravitron : MonoBehaviour
 
                 if (Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f)
                 {
+                    if (!IsHoldingDown)
+                    {
+                        _audioSource.PlayOneShot(ClawsOpenClip);
+                    }
+
+                    IsHoldingDown = true;
+
 
                     var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
                         transform.right, ShortDistance, TargetLayer);
 
                     if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                     {
+                        _audioSource.loop = true;
+                        _audioSource.clip = HoldLoopClip;
+                        _audioSource.Play();
                         CurrentObject = shortHit.rigidbody;
                         CurrentObject.velocity = Vector2.zero;
                         CurrentObject.angularVelocity = 0.0f;
@@ -91,6 +116,10 @@ public class Gravitron : MonoBehaviour
                         }
                     }
                 }
+                else
+                {
+                    IsHoldingDown = false;
+                }
 
 
             }
@@ -106,6 +135,9 @@ public class Gravitron : MonoBehaviour
 
             if (Math.Abs(Input.GetAxisRaw("Fire1")) > 0.1f)
             {
+                _audioSource.loop = false;
+                _audioSource.Stop();
+                _audioSource.PlayOneShot(FireClip);
                 CurrentObject.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
                 CurrentObject.tag = "Untagged";
                 CurrentObject = null;
@@ -124,11 +156,14 @@ public class Gravitron : MonoBehaviour
     {
         if (CurrentObject != null)
         {
+            _audioSource.loop = false;
+            _audioSource.Stop();
+            _audioSource.PlayOneShot(DropClip);
             CurrentObject.tag = "Untagged";
             CurrentObject.velocity = PlayerRigidbody.velocity;
             CurrentObject = null;
         }
-
+        
         _holdTimer = 0;
     }
 }
