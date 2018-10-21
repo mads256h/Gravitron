@@ -1140,7 +1140,8 @@ MonoBehaviour:
   DryFireClip: {fileID: 8300000, guid: b1fe63d3b6df19747972d879a2cbb6e9, type: 3}
   PickupClip: {fileID: 8300000, guid: 314977decb7ed8349a0ba38d6538038c, type: 3}
   TooHeavyClip: {fileID: 8300000, guid: e56ce978540c37744b5b67d2d2b2b7a0, type: 3}
-  FireClip: {fileID: 8300000, guid: 9d467e9f4e64aeb4eb0113b4d0609f69, type: 3}
+  FireClip: {fileID: 8300000, guid: dd3db8247bf72ab419bc5044bdd39764, type: 3}
+  HoldLoopClip: {fileID: 8300000, guid: 1681f6c4ff063814581ac440dab3f311, type: 3}
 --- !u!212 &1317986906
 SpriteRenderer:
   m_ObjectHideFlags: 0
