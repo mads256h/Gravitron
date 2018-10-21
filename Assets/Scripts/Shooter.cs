@@ -7,6 +7,8 @@ public class Shooter : MonoBehaviour
 
     public float Interval = 1.0f;
 
+    public GameObject Tip;
+
     public GameObject Bullet;
 
     private float _timer = 0;
@@ -25,7 +27,7 @@ public class Shooter : MonoBehaviour
 	    {
 	        _timer = 0;
 
-	        Instantiate(Bullet, transform.position + transform.right, Bullet.transform.rotation);
+	        Instantiate(Bullet, Tip.transform.position, Bullet.transform.rotation);
 	    }
 	}
 }

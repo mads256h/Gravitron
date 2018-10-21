@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 61137298971803172}
   - component: {fileID: 212704879291770998}
   - component: {fileID: 114326530263607430}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: ShooterRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -79,6 +79,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Interval: 1
+  Tip: {fileID: 0}
   Bullet: {fileID: 1636318749917830, guid: e1d22778452c0dc4f8bc5d9f8bec3856, type: 2}
 --- !u!212 &212704879291770998
 SpriteRenderer:

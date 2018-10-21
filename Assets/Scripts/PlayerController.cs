@@ -14,7 +14,11 @@ public class PlayerController : MonoBehaviour
 
     public Gravitron Gravitron;
 
+    public float JumpInterval = 0.1f;
+
     private new Rigidbody2D rigidbody2D;
+
+    private float _jumpTimer = 0.0f;
 
 	// Use this for initialization
 	private void Start ()
@@ -23,13 +27,16 @@ public class PlayerController : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	private void FixedUpdate () {
-		
+	private void FixedUpdate ()
+	{
+	    _jumpTimer += Time.fixedDeltaTime;
+
         rigidbody2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime * Speed, rigidbody2D.velocity.y);
 
-	    if (IsGrounded && Math.Abs(Input.GetAxisRaw("Jump")) > 0.1f)
+	    if (IsGrounded && _jumpTimer >= JumpInterval && Math.Abs(Input.GetAxisRaw("Jump")) > 0.1f)
 	    {
 	        IsGrounded = false;
+	        _jumpTimer = 0;
             rigidbody2D.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
 	    }
 
@@ -37,9 +44,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        if (col.contacts[0].point.y < transform.position.y)
-        IsGrounded = true;
-
+        foreach (var contact in col.contacts)
+        {
+            if (contact.point.y < transform.position.y - 0.6)
+            {
+                IsGrounded = true;
+                break;
+            }
+        }
         
         if (col.collider.gameObject.layer == 9)
         {

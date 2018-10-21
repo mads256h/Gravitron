@@ -23,6 +23,8 @@ public class Gravitron : MonoBehaviour
 
     public Rigidbody2D CurrentObject;
 
+    public Rigidbody2D PlayerRigidbody;
+
     private float _holdTimer = 0.0f;
 
 	// Use this for initialization
@@ -48,31 +50,49 @@ public class Gravitron : MonoBehaviour
         if (CurrentObject == null)
         {
             _holdTimer += Time.fixedDeltaTime;
-            if (_holdTimer > MinHoldTime && Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f)
+            if (_holdTimer > MinHoldTime)
             {
-                var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
-                    transform.right, ShortDistance, TargetLayer);
-
-                if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
+                if (Math.Abs(Input.GetAxisRaw("Fire1")) > 0.1f)
                 {
-                    CurrentObject = shortHit.rigidbody;
-                    CurrentObject.velocity = Vector2.zero;
-                    CurrentObject.angularVelocity = 0.0f;
-                    CurrentObject.tag = "Gravitronned";
-                    _holdTimer = 0;
-                }
-                else
-                {
-                    var longHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
-                        transform.right, LongDistance, TargetLayer);
+                    var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
+                        transform.right, ShortDistance, TargetLayer);
 
-                    if (longHit && longHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
+                    if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                     {
-                        var vec = transform.position - longHit.transform.position;
-                        longHit.rigidbody.AddForce(vec.normalized * (1 / vec.magnitude) * LongForce *
-                                                   Time.fixedDeltaTime);
+                        shortHit.rigidbody.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
+                        _holdTimer = 0;
                     }
                 }
+
+                if (Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f)
+                {
+
+                    var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
+                        transform.right, ShortDistance, TargetLayer);
+
+                    if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
+                    {
+                        CurrentObject = shortHit.rigidbody;
+                        CurrentObject.velocity = Vector2.zero;
+                        CurrentObject.angularVelocity = 0.0f;
+                        CurrentObject.tag = "Gravitronned";
+                        _holdTimer = 0;
+                    }
+                    else
+                    {
+                        var longHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
+                            transform.right, LongDistance, TargetLayer);
+
+                        if (longHit && longHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
+                        {
+                            var vec = transform.position - longHit.transform.position;
+                            longHit.rigidbody.AddForce(vec.normalized * (1 / vec.magnitude) * LongForce *
+                                                       Time.fixedDeltaTime);
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -86,7 +106,7 @@ public class Gravitron : MonoBehaviour
 
             if (Math.Abs(Input.GetAxisRaw("Fire1")) > 0.1f)
             {
-                CurrentObject.velocity = transform.right * PuntForce;
+                CurrentObject.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
                 CurrentObject.tag = "Untagged";
                 CurrentObject = null;
                 _holdTimer = 0;
@@ -103,8 +123,12 @@ public class Gravitron : MonoBehaviour
     public void DropObject()
     {
         if (CurrentObject != null)
-        CurrentObject.tag = "Untagged";
-        CurrentObject = null;
+        {
+            CurrentObject.tag = "Untagged";
+            CurrentObject.velocity = PlayerRigidbody.velocity;
+            CurrentObject = null;
+        }
+
         _holdTimer = 0;
     }
 }
