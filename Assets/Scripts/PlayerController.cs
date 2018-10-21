@@ -10,7 +10,9 @@ public class PlayerController : MonoBehaviour
 
     public bool IsGrounded = true;
 
-    public LayerMask GroundLayer;
+    public LayerMask GravAbleLayer;
+
+    public Gravitron Gravitron;
 
     private new Rigidbody2D rigidbody2D;
 
@@ -35,6 +37,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D col)
     {
-        IsGrounded = (col.gameObject.layer & GroundLayer) == GroundLayer || IsGrounded;
+        if (col.contacts[0].point.y < transform.position.y)
+        IsGrounded = true;
+
+        
+        if (col.collider.gameObject.layer == 9)
+        {
+            Gravitron.DropObject();
+            rigidbody2D.velocity = Vector2.zero;
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Im dead xd lol");
     }
 }

@@ -21,7 +21,7 @@ public class Gravitron : MonoBehaviour
 
     public float MinHoldTime = 0.5f;
 
-    private Rigidbody2D _currentObject;
+    public Rigidbody2D CurrentObject;
 
     private float _holdTimer = 0.0f;
 
@@ -45,7 +45,7 @@ public class Gravitron : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (_currentObject == null)
+        if (CurrentObject == null)
         {
             _holdTimer += Time.fixedDeltaTime;
             if (_holdTimer > MinHoldTime && Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f)
@@ -53,10 +53,12 @@ public class Gravitron : MonoBehaviour
                 var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
                     transform.right, ShortDistance, TargetLayer);
 
-                if (shortHit)
+                if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                 {
-                    Debug.Log("Object up close: " + shortHit.collider.name);
-                    _currentObject = shortHit.rigidbody;
+                    CurrentObject = shortHit.rigidbody;
+                    CurrentObject.velocity = Vector2.zero;
+                    CurrentObject.angularVelocity = 0.0f;
+                    CurrentObject.tag = "Gravitronned";
                     _holdTimer = 0;
                 }
                 else
@@ -64,42 +66,45 @@ public class Gravitron : MonoBehaviour
                     var longHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
                         transform.right, LongDistance, TargetLayer);
 
-                    if (longHit)
+                    if (longHit && longHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                     {
-                        Debug.Log("Object far away: " + longHit.collider.name);
                         var vec = transform.position - longHit.transform.position;
-                        longHit.rigidbody.AddForce(vec.normalized * (1 / vec.sqrMagnitude) * LongForce *
+                        longHit.rigidbody.AddForce(vec.normalized * (1 / vec.magnitude) * LongForce *
                                                    Time.fixedDeltaTime);
                     }
                 }
             }
         }
 
-        if (_currentObject != null)
+        if (CurrentObject != null)
         {
             _holdTimer += Time.fixedDeltaTime;
-            _currentObject.MovePosition(transform.position + transform.right * ShortDistance);
+            CurrentObject.MovePosition(transform.position + transform.right * ShortDistance);
 
-            _currentObject.MoveRotation(_currentObject.rotation + Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * RotationSpeed);
+            CurrentObject.MoveRotation(CurrentObject.rotation + Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * RotationSpeed);
 
 
             if (Math.Abs(Input.GetAxisRaw("Fire1")) > 0.1f)
             {
-                _currentObject.velocity = Vector2.zero;
-                _currentObject.angularVelocity = 0.0f;
-                _currentObject.AddForce(transform.right * PuntForce, ForceMode2D.Impulse);
-                _currentObject = null;
+                CurrentObject.velocity = transform.right * PuntForce;
+                CurrentObject.tag = "Untagged";
+                CurrentObject = null;
                 _holdTimer = 0;
             }
 
-            if (_holdTimer > MinHoldTime && Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f && _currentObject != null)
+            if (_holdTimer > MinHoldTime && Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f && CurrentObject != null)
             {
-                _currentObject.velocity = Vector2.zero;
-                _currentObject.angularVelocity = 0.0f;
-                _currentObject = null;
-                _holdTimer = 0;
+                DropObject();
             }
         }
 
+    }
+
+    public void DropObject()
+    {
+        if (CurrentObject != null)
+        CurrentObject.tag = "Untagged";
+        CurrentObject = null;
+        _holdTimer = 0;
     }
 }
