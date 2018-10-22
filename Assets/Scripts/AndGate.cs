@@ -6,17 +6,15 @@ public class AndGate : IOGateBase
     public IOGateChild Child1;
     public IOGateChild Child2;
 
-    private bool _enabled = false;
     private bool _1Enabled = false;
     private bool _2Enabled = false;
 
     public override void CheckInput()
     {
-        if (_enabled)
+        if (OutputEnabled)
         {
             if (!_1Enabled || !_2Enabled)
             {
-                _enabled = false;
                 OutputDisable();
             }
         }
@@ -24,7 +22,6 @@ public class AndGate : IOGateBase
         {
             if (_1Enabled && _2Enabled)
             {
-                _enabled = true;
                 OutputEnable();
             }
         }

@@ -4,12 +4,16 @@ public abstract class IOBase : MonoBehaviour
 {
     public IOBase[] OutputComponents;
 
+    public bool OutputEnabled { get; protected set; }
+
     public virtual void OutputEnable()
     {
         foreach (var ioBase in OutputComponents)
         {
             ioBase.Enable();
         }
+
+        OutputEnabled = true;
     }
 
     public virtual void OutputDisable()
@@ -18,6 +22,8 @@ public abstract class IOBase : MonoBehaviour
         {
             ioBase.Disable();
         }
+
+        OutputEnabled = false;
     }
 
     public virtual void OutputToggle()
@@ -26,6 +32,8 @@ public abstract class IOBase : MonoBehaviour
         {
             ioBase.Toggle();
         }
+
+        OutputEnabled = !OutputEnabled;
     }
 
     public bool Enabled { get; protected set; }
