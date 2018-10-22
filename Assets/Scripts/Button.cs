@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer),typeof(Collider2D), typeof(Rigidbody2D))]
-public class Button : MonoBehaviour
+public class Button : IOBase
 {
-    public Component[] Components;
-    public IOInterface[] IoInterfaces;
-
     public Sprite OpenSprite;
     public Sprite ClosedSprite;
 
@@ -17,22 +14,7 @@ public class Button : MonoBehaviour
 	void Start ()
 	{
 	    _spriteRenderer = GetComponent<SpriteRenderer>();
-	    _spriteRenderer.sprite = OpenSprite;
-
-        IoInterfaces = new IOInterface[Components.Length];
-
-        for (int i = 0; i < Components.Length; i++)
-	    {
-            Component component = Components[i];
-            var ioInterface = component as IOInterface;
-	        if (ioInterface != null)
-	            IoInterfaces[i] = ioInterface;
-	        else
-	        {
-	            Debug.LogErrorFormat("Component: {0} does not implement IOInterface", component);
-	        }
-        }
-	    
+	    _spriteRenderer.sprite = OpenSprite;	    
 	}
 	
 
@@ -41,10 +23,7 @@ public class Button : MonoBehaviour
         if (col.gameObject.layer == LayerMask.NameToLayer("Player") ||
             col.gameObject.layer == LayerMask.NameToLayer("GravAble"))
         {
-            foreach (var ioInterface in IoInterfaces)
-            {
-                ioInterface.Enable();
-            }
+            OutputEnable();
             _spriteRenderer.sprite = ClosedSprite;
         }
     }
@@ -54,10 +33,7 @@ public class Button : MonoBehaviour
         if (col.gameObject.layer == LayerMask.NameToLayer("Player") ||
             col.gameObject.layer == LayerMask.NameToLayer("GravAble"))
         {
-            foreach (var ioInterface in IoInterfaces)
-            {
-                ioInterface.Disable();
-            }
+            OutputDisable();
             _spriteRenderer.sprite = OpenSprite;
         }
     }

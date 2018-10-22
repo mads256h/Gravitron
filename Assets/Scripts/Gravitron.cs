@@ -118,7 +118,7 @@ public class Gravitron : MonoBehaviour
                     {
                         _audioSource.PlayOneShot(FireClip);
                         //shortHit.rigidbody.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
-                        shortHit.rigidbody.AddForce((Vector2)transform.right * PuntForce, ForceMode2D.Impulse);
+                        shortHit.rigidbody.AddForceAtPosition((Vector2)transform.right * PuntForce, shortHit.point, ForceMode2D.Impulse);
                         _holdTimer = 0;
                     }
                 }

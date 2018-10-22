@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Wire : MonoBehaviour, IOInterface
+public class Wire : IOBase
 {
     public Sprite EnabledSprite;
     public Sprite DisabledSprite;
@@ -13,31 +13,12 @@ public class Wire : MonoBehaviour, IOInterface
 	void Start ()
 	{
 	    _spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateSprite();
+        InputUpdate();
 	}
 
-    public bool Enabled { get; private set; }
-
-    private void UpdateSprite()
+    public override void InputUpdate()
     {
+        base.InputUpdate();
         _spriteRenderer.sprite = Enabled ? EnabledSprite : DisabledSprite;
-    }
-
-    public void Enable()
-    {
-        Enabled = true;
-        UpdateSprite();
-    }
-
-    public void Disable()
-    {
-        Enabled = false;
-        UpdateSprite();
-    }
-
-    public void Toggle()
-    {
-        Enabled = !Enabled;
-        UpdateSprite();
     }
 }

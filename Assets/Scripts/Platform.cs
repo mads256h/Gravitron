@@ -2,18 +2,12 @@
 
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(Rigidbody2D))]
-public class Platform : MonoBehaviour, IOInterface {
+public class Platform : IOBase {
 
     public Vector2 Direction = new Vector2(0, 0);
     public float Speed = 1.0f;
     public float WaitTime = 1.0f;
 
-    public bool Enabled
-    {
-        get { return _enabled; }
-    }
-    [SerializeField]
-    private bool _enabled = false;
 
     public Sprite EnabledSprite;
     public Sprite DisabledSprite;
@@ -30,7 +24,7 @@ public class Platform : MonoBehaviour, IOInterface {
 	void Start ()
 	{
 	    _spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateSprite();
+        InputUpdate();
 	    _rigidbody2D = GetComponent<Rigidbody2D>();
         _startDirection = _rigidbody2D.position;
         _finishDirection = new Vector2(_rigidbody2D.position.x + Direction.x, _rigidbody2D.position.y + Direction.y);
@@ -39,7 +33,7 @@ public class Platform : MonoBehaviour, IOInterface {
 	// Update is called once per frame
 	void FixedUpdate ()
 	{
-	    if (!_enabled) return;
+	    if (!Enabled) return;
 
 	    _waitTimer += Time.fixedDeltaTime;
 
@@ -74,26 +68,9 @@ public class Platform : MonoBehaviour, IOInterface {
 		
 	}
 
-    private void UpdateSprite()
+    public override void InputUpdate()
     {
-        _spriteRenderer.sprite = _enabled ? EnabledSprite : DisabledSprite;
-    }
-
-    public void Enable()
-    {
-        _enabled = true;
-        UpdateSprite();
-    }
-
-    public void Disable()
-    {
-        _enabled = false;
-        UpdateSprite();
-    }
-
-    public void Toggle()
-    {
-        _enabled = !_enabled;
-        UpdateSprite();
+        base.InputUpdate();
+        _spriteRenderer.sprite = Enabled ? EnabledSprite : DisabledSprite;
     }
 }
