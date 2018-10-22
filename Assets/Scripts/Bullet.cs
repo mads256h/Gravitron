@@ -32,7 +32,7 @@ public class Bullet : MonoBehaviour
         else if (col.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
         {
             if (col.collider.gameObject.tag != "Gravitronned")
-            col.rigidbody.AddForce(transform.right * Force, ForceMode2D.Impulse);
+            col.rigidbody.AddForceAtPosition(transform.right * Force, transform.position, ForceMode2D.Impulse);
         }
 
         Destroy(gameObject);

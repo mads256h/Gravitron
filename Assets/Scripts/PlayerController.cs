@@ -16,14 +16,14 @@ public class PlayerController : MonoBehaviour
 
     public float JumpInterval = 0.1f;
 
-    private new Rigidbody2D rigidbody2D;
+    private Rigidbody2D _rigidbody2D;
 
     private float _jumpTimer = 0.0f;
 
 	// Use this for initialization
 	private void Start ()
 	{
-	    rigidbody2D = GetComponent<Rigidbody2D>();
+	    _rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
 	// Update is called once per frame
@@ -31,16 +31,16 @@ public class PlayerController : MonoBehaviour
 	{
 	    _jumpTimer += Time.fixedDeltaTime;
 
-        rigidbody2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime * Speed, rigidbody2D.velocity.y);
+        _rigidbody2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime * Speed, _rigidbody2D.velocity.y);
 
 	    if (IsGrounded && _jumpTimer >= JumpInterval && Math.Abs(Input.GetAxisRaw("Jump")) > 0.1f)
 	    {
 	        IsGrounded = false;
 	        _jumpTimer = 0;
-            rigidbody2D.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            _rigidbody2D.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
 	    }
 
-	    if (rigidbody2D.position.y < -10.0f)
+	    if (_rigidbody2D.position.y < -10.0f)
 	        Die();
 
 	}
@@ -56,10 +56,10 @@ public class PlayerController : MonoBehaviour
             }
         }
         
-        if (col.collider.gameObject.layer == 9)
+        if (col.collider.gameObject.CompareTag("Gravitronned"))
         {
             Gravitron.DropObject();
-            rigidbody2D.velocity = Vector2.zero;
+            _rigidbody2D.velocity = Vector2.zero;
         }
     }
 

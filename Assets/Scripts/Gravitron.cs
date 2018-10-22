@@ -47,14 +47,14 @@ public class Gravitron : MonoBehaviour
     private bool IsHoldingDown = false;
 
 	// Use this for initialization
-	void Start ()
+	private void Start ()
 	{
 	    _audioSource = GetComponent<AudioSource>();
 
-        var lineRenderMaterial = new Material(Shader.Find("Unlit/Color"));
-	    lineRenderMaterial.color = LineRenderColor; 
+	    var lineRenderMaterial = new Material(Shader.Find("Unlit/Color")) {color = LineRenderColor};
 
-        var corner1Object = new GameObject("LineRenderer");
+
+	    var corner1Object = new GameObject("LineRenderer");
 	    corner1Object.transform.parent = Tip;
 	    _corner1Renderer = corner1Object.AddComponent<LineRenderer>();
 	    _corner1Renderer.useWorldSpace = true;
@@ -89,7 +89,7 @@ public class Gravitron : MonoBehaviour
 	}
 
     // Update is called once per frame
-    void Update ()
+    private void Update ()
 	{
 	    var mousePos = Input.mousePosition;
 
@@ -117,7 +117,8 @@ public class Gravitron : MonoBehaviour
                     if (shortHit && shortHit.collider.gameObject.layer == LayerMask.NameToLayer("GravAble"))
                     {
                         _audioSource.PlayOneShot(FireClip);
-                        shortHit.rigidbody.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
+                        //shortHit.rigidbody.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
+                        shortHit.rigidbody.AddForce((Vector2)transform.right * PuntForce, ForceMode2D.Impulse);
                         _holdTimer = 0;
                     }
                 }
@@ -176,11 +177,7 @@ public class Gravitron : MonoBehaviour
         {
             
             _holdTimer += Time.fixedDeltaTime;
-            CurrentObject.MovePosition(transform.position + transform.right * ShortDistance);
-
-            CurrentObject.MoveRotation(CurrentObject.rotation + Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * RotationSpeed);
-
-            GetBoxCorners();
+            
 
             if (Math.Abs(Input.GetAxisRaw("Fire1")) > 0.1f)
             {
@@ -191,10 +188,19 @@ public class Gravitron : MonoBehaviour
                 _audioSource.loop = false;
                 _audioSource.Stop();
                 _audioSource.PlayOneShot(FireClip);
-                CurrentObject.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
+                //CurrentObject.velocity = (Vector2)transform.right * PuntForce + PlayerRigidbody.velocity;
+                CurrentObject.AddForce((Vector2)transform.right * PuntForce, ForceMode2D.Impulse);
                 CurrentObject.tag = "Untagged";
                 CurrentObject = null;
                 _holdTimer = 0;
+            }
+            else
+            {
+                CurrentObject.MovePosition(transform.position + transform.right * ShortDistance);
+
+                CurrentObject.MoveRotation(CurrentObject.rotation + Input.GetAxisRaw("Vertical") * Time.fixedDeltaTime * RotationSpeed);
+
+                GetBoxCorners();
             }
 
             if (_holdTimer > MinHoldTime && Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f && CurrentObject != null)
@@ -223,11 +229,9 @@ public class Gravitron : MonoBehaviour
         _corner4Renderer.enabled = false;
         _holdTimer = 0;
     }
-
-    // Assign the collider in the inspector or elsewhere in your code
     
 
-    void GetBoxCorners()
+    private void GetBoxCorners()
     {
 
         Transform bcTransform = CurrentObject.transform;

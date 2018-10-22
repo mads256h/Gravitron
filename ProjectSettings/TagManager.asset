@@ -19,8 +19,8 @@ TagManager:
   - Player
   - Shooter
   - Bullet
-  - 
-  - 
+  - Enemy
+  - DeadEnemy
   - 
   - 
   - 
