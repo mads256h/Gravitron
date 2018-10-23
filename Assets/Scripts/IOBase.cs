@@ -11,7 +11,7 @@ public abstract class IOBase : IOInputBase
 
     }
 
-    public virtual void OutputEnable()
+    protected virtual void OutputEnable()
     {
         foreach (var ioBase in OutputComponents)
         {
@@ -22,7 +22,7 @@ public abstract class IOBase : IOInputBase
         OutputUpdate();
     }
 
-    public virtual void OutputDisable()
+    protected virtual void OutputDisable()
     {
         foreach (var ioBase in OutputComponents)
         {
@@ -33,7 +33,7 @@ public abstract class IOBase : IOInputBase
         OutputUpdate();
     }
 
-    public virtual void OutputToggle()
+    protected virtual void OutputToggle()
     {
         if (OutputEnabled)
             OutputDisable();
