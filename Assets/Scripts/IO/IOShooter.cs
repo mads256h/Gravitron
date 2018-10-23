@@ -12,10 +12,11 @@ namespace IO
         [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public GameObject Bullet;
 
 
-        public override void InputEnable()
+        protected override void InputUpdate()
         {
-            base.InputEnable();
-            Instantiate(Bullet, Tip.transform.position, Tip.transform.rotation);
+            base.InputUpdate();
+
+            if (InputEnabled) Instantiate(Bullet, Tip.transform.position, Tip.transform.rotation);
         }
     }
 }

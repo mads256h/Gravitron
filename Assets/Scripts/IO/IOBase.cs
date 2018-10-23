@@ -1,12 +1,15 @@
 ﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace IO
 {
     public abstract class IOBase : IOInputBase
     {
-        [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public IOInputBase[] OutputComponents;
+        [SerializeField] [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)]
+        protected IOInputBase[] OutputComponents;
 
-        public bool OutputEnabled { get; protected set; }
+        [SerializeField] [UsedImplicitly(ImplicitUseKindFlags.Assign)]
+        protected bool OutputEnabled;
 
         protected virtual void OutputUpdate()
         {
