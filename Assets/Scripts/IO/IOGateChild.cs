@@ -10,13 +10,13 @@ namespace IO
         public override void InputEnable()
         {
             base.InputEnable();
-            Gate.ChildInputEnable(this);
+            Gate?.ChildInputEnable(this);
         }
 
         public override void InputDisable()
         {
             base.InputDisable();
-            Gate.ChildInputDisable(this);
+            Gate?.ChildInputDisable(this);
         }
     }
 }
