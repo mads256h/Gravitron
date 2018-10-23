@@ -10,6 +10,7 @@ namespace IO
         [UsedImplicitly(ImplicitUseKindFlags.Assign)] public bool StartsEnabled = true;
 
         [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Interval = 1.0f;
+        [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Offset = 0.0f;
 
         [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Transform TimerHeadRigidbody2D;
 
@@ -20,6 +21,7 @@ namespace IO
         private void Start ()
         {
             InputEnabled = StartsEnabled;
+            _timer = Offset;
         }
 
         // Update is called once per frame
@@ -45,7 +47,8 @@ namespace IO
                 OutputDisable();
             }
 
-            TimerHeadRigidbody2D.rotation = Quaternion.Euler(new Vector3(0.0f, 0.0f, Mathf.Lerp(0.0f, -360.0f, _timer)));
+            TimerHeadRigidbody2D.rotation =
+                Quaternion.Euler(new Vector3(0.0f, 0.0f, Mathf.Lerp(0.0f, -360.0f, _timer)));
         }
     }
 }
