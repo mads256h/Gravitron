@@ -1,15 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-public class AndGate : IOGateBase
+﻿using JetBrains.Annotations;
+
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class IOGateAnd : IOGateBase
 {
-    public IOGateChild Child1;
-    public IOGateChild Child2;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public IOGateChild Child1;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public IOGateChild Child2;
 
     private bool _1Enabled = false;
     private bool _2Enabled = false;
 
-    public override void CheckInput()
+    protected override void CheckInput()
     {
         if (OutputEnabled)
         {
@@ -27,23 +27,23 @@ public class AndGate : IOGateBase
         }
     }
 
-    public override void EnableInput(IOGateChild child)
+    public override void ChildInputEnable(IOGateChild child)
     {
         if (child == Child1)
             _1Enabled = true;
         else
             _2Enabled = true;
 
-        base.EnableInput(child);
+        base.ChildInputEnable(child);
     }
 
-    public override void DisableInput(IOGateChild child)
+    public override void ChildInputDisable(IOGateChild child)
     {
         if (child == Child1)
             _1Enabled = false;
         else
             _2Enabled = false;
 
-        base.DisableInput(child);
+        base.ChildInputDisable(child);
     }
 }

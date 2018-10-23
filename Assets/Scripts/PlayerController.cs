@@ -1,33 +1,37 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
-public class PlayerController : MonoBehaviour
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class PlayerController : MonoBehaviour
 {
-    public float Speed = 20f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Speed = 20f;
 
-    public float JumpForce = 20f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float JumpForce = 20f;
 
-    public bool IsGrounded = true;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public bool IsGrounded = true;
 
-    public LayerMask GravAbleLayer;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public LayerMask GravAbleLayer;
 
-    public Gravitron Gravitron;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Gravitron Gravitron;
 
-    public float JumpInterval = 0.1f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float JumpInterval = 0.1f;
 
-    private Rigidbody2D _rigidbody2D;
+    [CanBeNull] private Rigidbody2D _rigidbody2D;
 
     private float _jumpTimer = 0.0f;
 
 	// Use this for initialization
+	[UsedImplicitly(ImplicitUseKindFlags.Access)]
 	private void Start ()
 	{
 	    _rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 
-	// Update is called once per frame
-	private void FixedUpdate ()
+    // Update is called once per frame
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
+    private void FixedUpdate ()
 	{
 	    _jumpTimer += Time.fixedDeltaTime;
 
@@ -45,6 +49,7 @@ public class PlayerController : MonoBehaviour
 
 	}
 
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     private void OnCollisionEnter2D(Collision2D col)
     {
         foreach (var contact in col.contacts)

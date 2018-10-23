@@ -605,7 +605,8 @@ MonoBehaviour:
   ArmLeftCollider2D: {fileID: 61753255198289322}
   ArmRightCollider2D: {fileID: 61729660568579310}
   LegLeftCollider2D: {fileID: 61404001054672324}
-  LegRighCollider2D: {fileID: 61229162020233326}
+  LegRightCollider2D: {fileID: 61561396390399064, guid: d05eed8681e2343429c805e150afee4a,
+    type: 2}
 --- !u!212 &212067195182907092
 SpriteRenderer:
   m_ObjectHideFlags: 1

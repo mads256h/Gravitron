@@ -1,52 +1,55 @@
 ﻿using System;
+using JetBrains.Annotations;
 using UnityEngine;
 
-public class Gravitron : MonoBehaviour
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class Gravitron : MonoBehaviour
 {
-    public Camera Camera;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Camera Camera;
 
-    public LayerMask TargetLayer;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public LayerMask TargetLayer;
 
-    public float ShortDistance = 2.0f;
-    public float LongDistance = 1000.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float ShortDistance = 2.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float LongDistance = 1000.0f;
 
-    public float LongForce = 10.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float LongForce = 10.0f;
 
-    public float PuntForce = 10.0f;
-    public float RotationSpeed = 10.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float PuntForce = 10.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float RotationSpeed = 10.0f;
 
-    public float MinHoldTime = 0.5f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float MinHoldTime = 0.5f;
 
-    public Transform Tip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Transform Tip;
 
-    public float LineRenderWidth = 0.02f;
-    public Color LineRenderColor = new Color(1.0f, 0.415f, 0.0f);
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float LineRenderWidth = 0.02f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Color LineRenderColor = new Color(1.0f, 0.415f, 0.0f);
 
-    public Rigidbody2D CurrentObject;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Rigidbody2D CurrentObject;
 
-    public Rigidbody2D PlayerRigidbody;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Rigidbody2D PlayerRigidbody;
 
-    public AudioClip ChargeClip;
-    public AudioClip ClawsCloseClip;
-    public AudioClip ClawsOpenClip;
-    public AudioClip DropClip;
-    public AudioClip DryFireClip;
-    public AudioClip PickupClip;
-    public AudioClip TooHeavyClip;
-    public AudioClip FireClip;
-    public AudioClip HoldLoopClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip ChargeClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip ClawsCloseClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip ClawsOpenClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip DropClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip DryFireClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip PickupClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip TooHeavyClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip FireClip;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public AudioClip HoldLoopClip;
 
-    private AudioSource _audioSource;
+    [CanBeNull] private AudioSource _audioSource;
 
-    private LineRenderer _corner1Renderer;
-    private LineRenderer _corner2Renderer;
-    private LineRenderer _corner3Renderer;
-    private LineRenderer _corner4Renderer;
+    [CanBeNull] private LineRenderer _corner1Renderer;
+    [CanBeNull] private LineRenderer _corner2Renderer;
+    [CanBeNull] private LineRenderer _corner3Renderer;
+    [CanBeNull] private LineRenderer _corner4Renderer;
 
     private float _holdTimer = 0.0f;
-    private bool IsHoldingDown = false;
+    private bool _isHoldingDown = false;
 
 	// Use this for initialization
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
 	private void Start ()
 	{
 	    _audioSource = GetComponent<AudioSource>();
@@ -89,6 +92,7 @@ public class Gravitron : MonoBehaviour
 	}
 
     // Update is called once per frame
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     private void Update ()
 	{
 	    var mousePos = Input.mousePosition;
@@ -102,6 +106,7 @@ public class Gravitron : MonoBehaviour
 
     }
 
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     void FixedUpdate()
     {
         if (CurrentObject == null)
@@ -125,12 +130,12 @@ public class Gravitron : MonoBehaviour
 
                 if (Math.Abs(Input.GetAxisRaw("Fire2")) > 0.1f)
                 {
-                    if (!IsHoldingDown)
+                    if (!_isHoldingDown)
                     {
                         _audioSource.PlayOneShot(ClawsOpenClip);
                     }
 
-                    IsHoldingDown = true;
+                    _isHoldingDown = true;
 
 
                     var shortHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y),
@@ -166,7 +171,7 @@ public class Gravitron : MonoBehaviour
                 }
                 else
                 {
-                    IsHoldingDown = false;
+                    _isHoldingDown = false;
                 }
 
 

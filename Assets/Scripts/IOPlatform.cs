@@ -1,19 +1,20 @@
-﻿using UnityEngine;
-
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(Rigidbody2D))]
-public class Platform : IOBase {
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class IOPlatform : IOInputBase {
 
-    public Vector2 Direction = new Vector2(0, 0);
-    public float Speed = 1.0f;
-    public float WaitTime = 1.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Vector2 Direction = new Vector2(0, 0);
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Speed = 1.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float WaitTime = 1.0f;
 
 
-    public Sprite EnabledSprite;
-    public Sprite DisabledSprite;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Sprite EnabledSprite;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Sprite DisabledSprite;
 
-    private SpriteRenderer _spriteRenderer;
-    private Rigidbody2D _rigidbody2D;
+    [CanBeNull] private SpriteRenderer _spriteRenderer;
+    [CanBeNull] private Rigidbody2D _rigidbody2D;
     private Vector2 _startDirection;
     private Vector2 _finishDirection;
 
@@ -21,7 +22,8 @@ public class Platform : IOBase {
     private float _waitTimer = 0.0f;
 
 	// Use this for initialization
-	void Start ()
+	[UsedImplicitly(ImplicitUseKindFlags.Access)]
+	private void Start ()
 	{
 	    _spriteRenderer = GetComponent<SpriteRenderer>();
         InputUpdate();
@@ -29,11 +31,12 @@ public class Platform : IOBase {
         _startDirection = _rigidbody2D.position;
         _finishDirection = new Vector2(_rigidbody2D.position.x + Direction.x, _rigidbody2D.position.y + Direction.y);
 	}
-	
-	// Update is called once per frame
-	void FixedUpdate ()
+
+    // Update is called once per frame
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
+    private void FixedUpdate ()
 	{
-	    if (!Enabled) return;
+	    if (!InputEnabled) return;
 
 	    _waitTimer += Time.fixedDeltaTime;
 
@@ -68,9 +71,9 @@ public class Platform : IOBase {
 		
 	}
 
-    public override void InputUpdate()
+    protected override void InputUpdate()
     {
         base.InputUpdate();
-        _spriteRenderer.sprite = Enabled ? EnabledSprite : DisabledSprite;
+        _spriteRenderer.sprite = InputEnabled ? EnabledSprite : DisabledSprite;
     }
 }

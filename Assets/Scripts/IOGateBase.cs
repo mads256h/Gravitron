@@ -1,16 +1,16 @@
 ﻿public abstract class IOGateBase : IOBase {
 
-    public virtual void CheckInput()
+    protected virtual void CheckInput()
     {
 
     }
 
-    public virtual void EnableInput(IOGateChild child)
+    public virtual void ChildInputEnable(IOGateChild child)
     {
         CheckInput();
     }
 
-    public virtual void DisableInput(IOGateChild child)
+    public virtual void ChildInputDisable(IOGateChild child)
     {
         CheckInput();
     }

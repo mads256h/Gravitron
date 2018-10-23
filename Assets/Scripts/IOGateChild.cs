@@ -1,17 +1,19 @@
-﻿public class IOGateChild : IOBase
+﻿using JetBrains.Annotations;
+
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class IOGateChild : IOInputBase
 {
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public IOGateBase Gate;
 
-    public IOGateBase Gate;
-
-    public override void Enable()
+    public override void InputEnable()
     {
-        base.Enable();
-        Gate.EnableInput(this);
+        base.InputEnable();
+        Gate.ChildInputEnable(this);
     }
 
-    public override void Disable()
+    public override void InputDisable()
     {
-        base.Disable();
-        Gate.DisableInput(this);
+        base.InputDisable();
+        Gate.ChildInputDisable(this);
     }
 }

@@ -1,23 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer),typeof(Collider2D), typeof(Rigidbody2D))]
-public class Button : IOBase
+[RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(Rigidbody2D))]
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class IOButton : IOBase
 {
-    public Sprite OpenSprite;
-    public Sprite ClosedSprite;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Sprite OpenSprite;
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Sprite ClosedSprite;
 
-    private SpriteRenderer _spriteRenderer;
+    [CanBeNull] private SpriteRenderer _spriteRenderer;
 
 	// Use this for initialization
-	void Start ()
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
+	private void Start ()
 	{
 	    _spriteRenderer = GetComponent<SpriteRenderer>();
 	    _spriteRenderer.sprite = OpenSprite;	    
 	}
-	
 
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     void OnCollisionEnter2D(Collision2D col)
     {
         if (col.gameObject.layer == LayerMask.NameToLayer("Player") ||
@@ -28,6 +29,7 @@ public class Button : IOBase
         }
     }
 
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
     void OnCollisionExit2D(Collision2D col)
     {
         if (col.gameObject.layer == LayerMask.NameToLayer("Player") ||

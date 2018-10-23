@@ -1,29 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using JetBrains.Annotations;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer), typeof(Collider2D), typeof(Rigidbody2D))]
-public class Bullet : MonoBehaviour
+[UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
+public sealed class Bullet : MonoBehaviour
 {
 
-    public float Speed = 20.0f;
-    public float Force = 20.0f;
-    private Rigidbody2D _rigidbody2D;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Speed = 20.0f;
+    [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float Force = 20.0f;
+    [CanBeNull] private Rigidbody2D _rigidbody2D;
 
 	// Use this for initialization
-	private void Start ()
+	[UsedImplicitly(ImplicitUseKindFlags.Access)]
+	private void Start()
 	{
 	    _rigidbody2D = GetComponent<Rigidbody2D>();
 	}
 	
 	// Update is called once per frame
-	private void FixedUpdate ()
+	[UsedImplicitly(ImplicitUseKindFlags.Access)]
+	private void FixedUpdate()
 	{
-        _rigidbody2D.MovePosition(_rigidbody2D.position + (Vector2)transform.right * Speed * Time.fixedDeltaTime);
+        _rigidbody2D?.MovePosition(_rigidbody2D.position + (Vector2)transform.right * Speed * Time.fixedDeltaTime);
 		
 	}
 
-    private void OnCollisionEnter2D(Collision2D col)
+    [UsedImplicitly(ImplicitUseKindFlags.Access)]
+    private void OnCollisionEnter2D([NotNull] Collision2D col)
     {
         if (col.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
