@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
 [UsedImplicitly(ImplicitUseKindFlags.InstantiatedWithFixedConstructorSignature)]
@@ -18,6 +20,12 @@ public sealed class PlayerController : MonoBehaviour
 
     [UsedImplicitly(ImplicitUseKindFlags.Assign)] public float JumpInterval = 0.1f;
 
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Canvas DeadCanvas;
+
+    [CanBeNull] [UsedImplicitly(ImplicitUseKindFlags.Assign)] public Animator DeadAnimator;
+
+    private bool _enabled = true;
+
     [CanBeNull] private Rigidbody2D _rigidbody2D;
 
     private float _jumpTimer = 0.0f;
@@ -32,7 +40,11 @@ public sealed class PlayerController : MonoBehaviour
     // Update is called once per frame
     [UsedImplicitly(ImplicitUseKindFlags.Access)]
     private void FixedUpdate ()
-	{
+    {
+        if (!_enabled) return;
+
+        if (Input.GetKey(KeyCode.R)) Die();
+
 	    _jumpTimer += Time.fixedDeltaTime;
 
         _rigidbody2D.velocity = new Vector2(Input.GetAxisRaw("Horizontal") * Time.fixedDeltaTime * Speed, _rigidbody2D.velocity.y);
@@ -70,6 +82,19 @@ public sealed class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("Im dead xd lol");
+        DeadCanvas.enabled = true;
+        DeadAnimator.enabled = true;
+        _rigidbody2D.constraints = RigidbodyConstraints2D.None;
+        _enabled = false;
+        Gravitron.DropObject();
+        Destroy(Gravitron);
+
+        StartCoroutine(changeLevel());
+    }
+
+    private IEnumerator changeLevel()
+    {
+        yield return new WaitForSeconds(5.0f);
+        SceneManager.LoadScene("MainScene");
     }
 }

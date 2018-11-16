@@ -85,5 +85,9 @@ public sealed class Enemy : MonoBehaviour
             LegLeftCollider2D.enabled = true;
             LegRightCollider2D.enabled = true;
         }
+        else if (col.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            col.gameObject.GetComponent<PlayerController>().Die();
+        }
     }
 }
